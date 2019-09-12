@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".QuizActivity">
+
+    <ProgressBar
+        android:id="@+id/quesLoad"
+        android:visibility="gone"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+   <LinearLayout
+       android:id="@+id/quesContainer"
+       android:orientation="vertical"
+       android:layout_width="match_parent"
+       android:layout_height="match_parent">
+
+       <TextView
+           android:id="@+id/tvQuestion"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:fontFamily="@font/comfortaa"
+           android:gravity="center"
+           android:textSize="21sp"
+           android:padding="8dp"
+           tools:text="Does Kotlin use primitive types?" />
+
+       <ScrollView
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+
+           <LinearLayout
+               android:orientation="vertical"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent">
+
+
+               <FrameLayout
+                   android:id="@+id/imContainer"
+                   android:layout_width="match_parent"
+                   android:layout_height="380dp">
+
+                   <ImageView
+                       android:id="@+id/ivQues"
+                       android:layout_width="match_parent"
+                       android:layout_height="match_parent"/>
+                   <ProgressBar
+                       android:id="@+id/imLoad"
+                       android:layout_gravity="center"
+                       android:layout_width="match_parent"
+                       android:layout_height="wrap_content"/>
+               </FrameLayout>
+
+
+               <LinearLayout
+                   android:orientation="horizontal"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content">
+                   <com.google.android.material.button.MaterialButton
+                       tools:text = "Option A"
+                       android:id="@+id/btnA"
+                       android:layout_width="0dp"
+                       style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                       app:strokeColor="@color/colorPrimary"
+                       android:textColor="@color/colorPrimary"
+                       app:strokeWidth="2dp"
+                       android:layout_weight="1"
+                       android:layout_margin="16dp"
+                       android:layout_height="wrap_content"/>
+
+                   <com.google.android.material.button.MaterialButton
+                       tools:text = "Option B"
+                       android:id="@+id/btnB"
+                       style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                       app:strokeColor="@color/colorPrimary"
+                       android:textColor="@color/colorPrimary"
+                       app:strokeWidth="2dp"
+                       android:layout_width="0dp"
+                       android:layout_weight="1"
+                       android:layout_margin="16dp"
+                       android:layout_height="wrap_content"/>
+
+               </LinearLayout>
+
+               <LinearLayout
+                   android:orientation="horizontal"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content">
+                   <com.google.android.material.button.MaterialButton
+                       tools:text = "Option C"
+                       android:id="@+id/btnC"
+                       android:layout_width="0dp"
+                       style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                       app:strokeColor="@color/colorPrimary"
+                       android:textColor="@color/colorPrimary"
+                       app:strokeWidth="2dp"
+                       android:layout_weight="1"
+                       android:layout_margin="16dp"
+                       android:layout_height="wrap_content"/>
+
+                   <com.google.android.material.button.MaterialButton
+                       tools:text = "Option D"
+                       android:id="@+id/btnD"
+                       android:layout_width="0dp"
+                       android:layout_weight="1"
+                       android:layout_margin="16dp"
+                       style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                       app:strokeColor="@color/colorPrimary"
+                       android:textColor="@color/colorPrimary"
+                       app:strokeWidth="2dp"
+                       android:layout_height="wrap_content"/>
+
+               </LinearLayout>
+               <com.google.android.material.button.MaterialButton
+                   android:text = "Next"
+                   android:id="@+id/btnNextQ"
+                   android:layout_gravity="end"
+                   android:visibility="gone"
+                   tools:visibility="visible"
+                   android:layout_margin="16dp"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"/>
+           </LinearLayout>
+
+       </ScrollView>
+   </LinearLayout>
+</FrameLayout>
