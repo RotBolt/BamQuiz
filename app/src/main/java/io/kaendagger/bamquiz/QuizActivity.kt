@@ -13,16 +13,15 @@ import com.squareup.picasso.Picasso
 import io.kaendagger.bamquiz.data.QuizApiClient
 import io.kaendagger.bamquiz.data.model.Problem
 import kotlinx.android.synthetic.main.activity_quiz.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import java.lang.Exception
+import java.util.concurrent.TimeUnit
 import kotlin.coroutines.CoroutineContext
 import kotlin.properties.Delegates
 
 class QuizActivity : AppCompatActivity(), CoroutineScope, View.OnClickListener {
 
+    private var timeBound = 10 * 60 * 1000
     private var score = 0
     private var qIdx = 0
     private val userMarkedOptions = mutableListOf<String>()
@@ -63,10 +62,12 @@ class QuizActivity : AppCompatActivity(), CoroutineScope, View.OnClickListener {
             }
         }
 
-        Log.d("PUI","""
+        Log.d(
+            "PUI", """
             user $userMarkedOptions
             correct $currCorrectOptions
-        """.trimIndent())
+        """.trimIndent()
+        )
     }
 
     override fun onClick(p0: View?) {
@@ -76,12 +77,12 @@ class QuizActivity : AppCompatActivity(), CoroutineScope, View.OnClickListener {
                 btnNextQ.isVisible = true
             }
             R.id.btnB -> {
-                btnBState= !btnBState
+                btnBState = !btnBState
                 btnNextQ.isVisible = true
 
             }
             R.id.btnC -> {
-                btnCState= !btnCState
+                btnCState = !btnCState
                 btnNextQ.isVisible = true
             }
             R.id.btnD -> {
@@ -99,13 +100,13 @@ class QuizActivity : AppCompatActivity(), CoroutineScope, View.OnClickListener {
                     val problem = questions[qIdx]
                     displayThisProblem(problem)
                 } else {
-                    val intent = Intent(this,ScoreActivity::class.java).apply {
-                        putExtra("score",score)
+                    val intent = Intent(this, ScoreActivity::class.java).apply {
+                        putExtra("score", score)
                         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     }
                     startActivity(intent)
                 }
-                Log.d("PUI","score $score")
+                Log.d("PUI", "score $score")
             }
         }
     }
@@ -120,7 +121,7 @@ class QuizActivity : AppCompatActivity(), CoroutineScope, View.OnClickListener {
 
     private fun checkCorrectness(): Boolean {
 
-        if (currCorrectOptions.size != userMarkedOptions.size){
+        if (currCorrectOptions.size != userMarkedOptions.size) {
             return false
         }
 
@@ -158,6 +159,24 @@ class QuizActivity : AppCompatActivity(), CoroutineScope, View.OnClickListener {
                 questions = response.body() ?: emptyList()
                 val problem = questions[qIdx]
                 displayThisProblem(problem)
+
+                launch {
+                    while (timeBound != 0) {
+                        delay(1000)
+                        timeBound -= 1000
+                        val minutes = (timeBound / 1000) / 60
+                        val seconds = (timeBound / 1000) % 60
+                        tvTimer.text = "${minutes}:" + "${seconds}".padStart(2, '0')
+                    }
+                    tvTimer.text = " Time Out"
+                    delay(300)
+                    val intent = Intent(this@QuizActivity, ScoreActivity::class.java).apply {
+                        putExtra("score", score)
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    }
+                    startActivity(intent)
+                }
+
             } else {
                 Log.d("PUI", "${response.errorBody()}")
             }
@@ -168,7 +187,7 @@ class QuizActivity : AppCompatActivity(), CoroutineScope, View.OnClickListener {
         launch {
             quesLoad.isVisible = false
             quesContainer.isVisible = true
-            tvQuestion.text = problem.ques
+            tvQuestion.text = "Q${qIdx + 1})  ${problem.ques}"
             btnA.text = problem.option_a
             btnB.text = problem.option_b
             btnC.text = problem.option_c
