@@ -62,12 +62,6 @@ class QuizActivity : AppCompatActivity(), CoroutineScope, View.OnClickListener {
             }
         }
 
-        Log.d(
-            "PUI", """
-            user $userMarkedOptions
-            correct $currCorrectOptions
-        """.trimIndent()
-        )
     }
 
     override fun onClick(p0: View?) {
@@ -106,7 +100,6 @@ class QuizActivity : AppCompatActivity(), CoroutineScope, View.OnClickListener {
                     }
                     startActivity(intent)
                 }
-                Log.d("PUI", "score $score")
             }
         }
     }
@@ -168,7 +161,7 @@ class QuizActivity : AppCompatActivity(), CoroutineScope, View.OnClickListener {
                         val seconds = (timeBound / 1000) % 60
                         tvTimer.text = "${minutes}:" + "${seconds}".padStart(2, '0')
                     }
-                    tvTimer.text = " Time Out"
+                    tvTimer.text = "Time Out"
                     delay(300)
                     val intent = Intent(this@QuizActivity, ScoreActivity::class.java).apply {
                         putExtra("score", score)
@@ -178,7 +171,7 @@ class QuizActivity : AppCompatActivity(), CoroutineScope, View.OnClickListener {
                 }
 
             } else {
-                Log.d("PUI", "${response.errorBody()}")
+                Log.e("PUI", "${response.errorBody()}")
             }
         }
     }
@@ -187,7 +180,7 @@ class QuizActivity : AppCompatActivity(), CoroutineScope, View.OnClickListener {
         launch {
             quesLoad.isVisible = false
             quesContainer.isVisible = true
-            tvQuestion.text = "Q${qIdx + 1})  ${problem.ques}"
+            tvQuestion.text = "${qIdx + 1}/12:  ${problem.ques}"
             btnA.text = problem.option_a
             btnB.text = problem.option_b
             btnC.text = problem.option_c
